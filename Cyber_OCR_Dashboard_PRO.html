@@ -1,0 +1,42 @@
+
+<!DOCTYPE html><html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cyber OCR Dashboard PRO</title>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<style>
+body{margin:0;background:#0b1220;color:#fff;font-family:Arial}
+header{padding:14px;background:#101827;color:#0ff;font-weight:bold}
+.wrap{display:grid;grid-template-columns:60% 40%;height:calc(100vh - 50px)}
+.left,.right{padding:12px}.card{background:#162033;border-radius:12px;height:100%;padding:10px;box-sizing:border-box}
+#drop{height:78%;border:2px dashed #3af;display:flex;align-items:center;justify-content:center;overflow:auto}
+#drop img{max-width:100%;max-height:100%}
+textarea{width:100%;height:65%;background:#0b1220;color:#9f9;border:none}
+button{margin:4px;padding:8px 12px}
+</style></head><body>
+<header>CYBER OCR DASHBOARD PRO</header>
+<div class=wrap>
+<div class=left><div class=card>
+<div id=drop><span id=msg>Drop / Upload Gambar</span><img id=img hidden></div>
+<input id=file type=file accept=image/*>
+<button onclick="ocr()">OCR</button>
+<button onclick="navigator.clipboard.writeText(out.value)">Copy</button>
+</div></div>
+<div class=right><div class=card>
+<h3>Hasil OCR</h3>
+<textarea id=out></textarea>
+<div id=status>Ready</div>
+</div></div></div>
+<script>
+const img=document.getElementById('img'),msg=document.getElementById('msg');
+file.onchange=e=>load(e.target.files[0]);
+drop.ondragover=e=>e.preventDefault();
+drop.ondrop=e=>{e.preventDefault();load(e.dataTransfer.files[0]);}
+function load(f){const r=new FileReader();r.onload=x=>{img.src=x.target.result;img.hidden=false;msg.hidden=true};r.readAsDataURL(f)}
+async function ocr(){
+ if(!img.src)return;
+ status.textContent='Memproses OCR...';
+ const r=await Tesseract.recognize(img.src,'eng');
+ out.value=r.data.text;
+ status.textContent='Selesai';
+}
+</script></body></html>
