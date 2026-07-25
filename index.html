@@ -2,7 +2,21 @@
 <!DOCTYPE html><html lang="id"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Cyber OCR Dashboard PRO</title>
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js">
+// Paste from clipboard
+document.addEventListener('paste',function(e){
+ const items=e.clipboardData.items;
+ for(const item of items){
+  if(item.type.indexOf('image')===0){
+   const f=item.getAsFile();
+   load(f);
+   setTimeout(ocr,200);
+   break;
+  }
+ }
+});
+
+</script>
 <style>
 body{margin:0;background:#0b1220;color:#fff;font-family:Arial}
 header{padding:14px;background:#101827;color:#0ff;font-weight:bold}
@@ -39,4 +53,18 @@ async function ocr(){
  out.value=r.data.text;
  status.textContent='Selesai';
 }
+
+// Paste from clipboard
+document.addEventListener('paste',function(e){
+ const items=e.clipboardData.items;
+ for(const item of items){
+  if(item.type.indexOf('image')===0){
+   const f=item.getAsFile();
+   load(f);
+   setTimeout(ocr,200);
+   break;
+  }
+ }
+});
+
 </script></body></html>
